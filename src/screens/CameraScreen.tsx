@@ -1,6 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { CameraView, BarcodeScanningResult } from 'expo-camera';
+import { CameraView, BarcodeScanningResult, useCameraPermissions } from 'expo-camera';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Haptics from 'expo-haptics';
 import { useAuth } from '../context/AuthContext';
@@ -20,6 +20,7 @@ export default function CameraScreen({ navigation }: CameraScreenProps) {
   const hasScanned = useRef(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showError, setShowError] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -56,6 +57,23 @@ export default function CameraScreen({ navigation }: CameraScreenProps) {
     await logout();
     navigation.replace('Login');
   }, [logout, navigation]);
+
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View style={styles.container} />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ color: 'white', marginBottom: 20 }}>Necesitamos permiso para usar la cámara</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={requestPermission}>
+          <Text style={styles.logoutIcon}>Otorgar permiso</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
