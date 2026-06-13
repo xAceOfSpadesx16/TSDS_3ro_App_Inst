@@ -56,11 +56,11 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
         {/* Hero */}
         <View style={styles.hero}>
           <View style={styles.iconContainer}>
-            <Text style={styles.iconText}>school</Text>
+            <Text style={styles.iconText}>App</Text>
           </View>
           <Text style={styles.title}>Guía de aulas</Text>
           <Text style={styles.subtitle}>Hola! Ingresá tus datos para empezar.</Text>
-          <Text style={styles.institution}>I.S.P.F. y T N° 28</Text>
+          <Text style={styles.institution}>I.S.F.DyT N° 28</Text>
         </View>
 
         {/* Form */}
@@ -154,10 +154,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   iconText: {
     fontSize: 32,
     color: '#0058bc',
+
   },
   title: {
     fontSize: 28,
